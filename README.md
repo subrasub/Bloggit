@@ -1,5 +1,6 @@
 # Bloggit
 A blogging web-app built using Node.js, MongoDB, and Express
+
 Clone the repository by entering the following into your terminal/Command-Line:
 
 ```
