@@ -1,13 +1,15 @@
-var express         = require("express"),
-    app             = express(),
-    bodyParser      = require("body-parser"),
-    mongoose        = require("mongoose"),
-    methodOverride  = require("method-override")
+var express             = require("express"),
+    app                 = express(),
+    bodyParser          = require("body-parser"),
+    mongoose            = require("mongoose"),
+    methodOverride      = require("method-override"),
+    expressSanitizer    = require("express-sanitizer") 
     
 //Configuration
 mongoose.connect("mongodb://localhost/blog_app")
 app.set("view engine", "ejs")
 app.use(express.static("public"))
+app.use(expressSanitizer())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(methodOverride("_method"))
 
@@ -26,7 +28,9 @@ app.get("/", function(req, res){
 })
 
 app.get("/blogs", function(req, res){
-    // res.render("index")
+    // console.log(req.body)
+    // req.body.blog.body = req.sanitize(req.body.blog.body)
+    // console.log(req.body)
     Blog.find({}, function(err, blogs){
         if(err)
             console.log(err)
@@ -92,7 +96,6 @@ app.delete("/blogs/:id", function(req, res){
             res.redirect("/blogs")
     })
 })
-
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("Blog App is running!")
